@@ -8,20 +8,32 @@ export default new Vuex.Store({
     pokemon: []
   },
   mutations: {
-    UPDATE_POKEMON(state, pokemonArray) {
-      state.pokemon = pokemonArray;
+    UPDATE_POKEMON_ARRAY(state, pokemon) {
+      state.pokemon = [...state.pokemon, pokemon];
     }
   },
   actions: {
-    updatePokemon({ commit }, pokemonArray) {
-      commit('UPDATE_POKEMON', pokemonArray);
+    updatePokemonArray({ commit }, pokemon) {
+      commit('UPDATE_POKEMON_ARRAY', pokemon);
+    },
+    fetchSinglePokemon({ dispatch }, pokedexIndex) {
+      const hasPokemon =
+        this.state.pokemon.filter((p) => p.id === pokedexIndex).length > 0;
+      if (!hasPokemon) {
+        fetch(`https://pokeapi.co/api/v2/pokemon/${pokedexIndex}`)
+          .then((response) => response.json())
+          .then((pokemon) => {
+            dispatch('updatePokemonArray', pokemon);
+          });
+      }
     },
     fetchPokemon({ dispatch }, numberOfPokemon) {
-      fetch(`https://pokeapi.co/api/v2/pokemon?limit=${numberOfPokemon}`)
-        .then((response) => response.json())
-        .then((data) => {
-          dispatch('updatePokemon', data.results);
-        });
+      // fetches initial pokemon for page render
+      const pokemonArray = [];
+
+      for (let i = 1; i <= numberOfPokemon; i++) {
+        dispatch('fetchSinglePokemon', i);
+      }
     }
   }
 });
