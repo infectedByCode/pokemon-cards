@@ -6,7 +6,7 @@
         v-for="pokemon in pokemonArr"
         :key="pokemon.id"
         :pokemon="pokemon"
-        :isActive="activePokemonId === pokemon.id"
+        :activePokemonId="activePokemonId"
         @click="togglePokemonEffect(pokemon.id)"
       />
     </section>
@@ -50,6 +50,8 @@ export default {
 <style scoped>
 .pokedex-carousel {
   display: flex;
-  overflow: hidden;
+  overflow-x: hidden;
+  padding: 100px 0;
+  min-height: 800px;
 }
 </style>
