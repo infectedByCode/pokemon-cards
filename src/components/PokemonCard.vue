@@ -1,5 +1,5 @@
 <template>
-  <div :class="cardClasses" @click="$emit('click', pokemon.id)" tabindex="0">
+  <div :id="pokemon.id" :class="cardClasses" @click="$emit('click', pokemon.id)" tabindex="0">
     <div class="pokemon-card-inner">
       <div class="pokemon-card-front">
         <p>{{ pokemon.name }}</p>
@@ -44,7 +44,7 @@ export default {
 .pokemon-card {
   box-sizing: border-box;
   height: 300px;
-  width: 220px;
+  min-width: 220px;
   border-radius: 15px;
   margin: 5px 20px;
   top: 0;
@@ -53,12 +53,7 @@ export default {
   left: 0;
   opacity: 1;
   transition: top ease 4s, right ease 4s, bottom ease 4s, left ease 4s,
-    opacity ease-in-out 4s;
-}
-
-.pokemon-card:focus {
-  outline: 5px solid hotpink;
-  outline-offset: 5px;
+    opacity ease-in-out 2s;
 }
 
 .pokemon-card:hover {

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Pokedex</h1>
-    <section class="pokedex-carousel">
+    <section :class="`pokedex-carousel ${activePokemonId ? 'pokedex-carousel__no-overflow' : ''}`">
       <PokemonCard
         v-for="pokemon in pokemonArr"
         :key="pokemon.id"
@@ -48,10 +48,21 @@ export default {
 </script>
 
 <style scoped>
+#app {
+  box-sizing: border-box;
+  max-width: 400px;
+  height: 100%;
+  overflow: hidden;
+}
+
 .pokedex-carousel {
   display: flex;
-  overflow-x: hidden;
-  padding: 100px 0;
-  min-height: 800px;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 50px 0;
+}
+
+.pokedex-carousel__no-overflow {
+  overflow: hidden;
 }
 </style>
