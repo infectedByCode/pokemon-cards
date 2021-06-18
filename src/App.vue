@@ -3,6 +3,7 @@
     <h1>Pokedex</h1>
     <section :class="`pokedex-carousel ${activePokemonId ? 'pokedex-carousel__no-overflow' : ''}`">
       <PokemonCard
+        :id="'p' + pokemon.id"
         v-for="pokemon in pokemonArr"
         :key="pokemon.id"
         :pokemon="pokemon"
@@ -23,11 +24,12 @@ export default {
   },
   data() {
     return {
-      activePokemonId: null
+      activePokemonId: null,
+      lastId: 5
     };
   },
   beforeCreate() {
-    this.$store.dispatch("fetchPokemon", 5);
+    this.$store.dispatch("fetchPokemon", 20);
   },
   computed: {
     pokemonArr() {
@@ -50,19 +52,19 @@ export default {
 <style scoped>
 #app {
   box-sizing: border-box;
-  max-width: 400px;
   height: 100%;
   overflow: hidden;
 }
 
 .pokedex-carousel {
   display: flex;
-  justify-content: center;
+  justify-content: initial;
   overflow-x: auto;
   padding: 50px 0;
 }
 
 .pokedex-carousel__no-overflow {
   overflow: hidden;
+  justify-content: center;
 }
 </style>

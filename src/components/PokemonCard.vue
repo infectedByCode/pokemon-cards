@@ -2,8 +2,17 @@
   <div :id="pokemon.id" :class="cardClasses" @click="$emit('click', pokemon.id)" tabindex="0">
     <div class="pokemon-card-inner">
       <div class="pokemon-card-front">
-        <p>{{ pokemon.name }}</p>
-        <img :src="pokemon.sprites.front_default" :alt="`${pokemon.name} card image`" />
+        <section class="pokemon-card-front__title">
+          <p>Basic</p>
+          <h4 class="pokemon-card-front__name">{{ pokemon.name | nameFormat }}</h4>
+          <p>
+            <span>HP</span>
+            {{hp}}
+          </p>
+        </section>
+        <main>
+          <img :src="pokemon.sprites.front_default" :alt="`${pokemon.name} card image`" />
+        </main>
       </div>
       <div class="pokemon-card-back">
         <img src="../assets/images/pokemon-ball.png" alt />
@@ -26,6 +35,11 @@ export default {
       default: -1
     }
   },
+  filters: {
+    nameFormat(name) {
+      return name[0].toUpperCase() + name.slice(1).toLowerCase();
+    }
+  },
   computed: {
     cardClasses() {
       return `pokemon-card ${
@@ -35,28 +49,36 @@ export default {
           ? "pokemon-card__hidden"
           : ""
       }`;
+    },
+    hp() {
+      return this.pokemon.stats.filter(s => s.stat.name === "hp")[0].base_stat;
     }
   }
 };
 </script>
 
 <style scoped>
+/* GENERAL */
 .pokemon-card {
   box-sizing: border-box;
   height: 300px;
   min-width: 220px;
   border-radius: 15px;
-  margin: 5px 20px;
+  margin: 0 -180px 0 0;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   opacity: 1;
   transition: top ease 4s, right ease 4s, bottom ease 4s, left ease 4s,
-    opacity ease-in-out 2s;
+    opacity ease-in-out 0.5s, margin ease-in-out 1s;
 }
 
 .pokemon-card:hover {
+  margin: 0 50px 0 0;
+}
+
+.pokemon-card-inner:hover {
   box-shadow: 10px 10px 5px #444;
 }
 
@@ -71,7 +93,7 @@ export default {
   height: 100%;
   border: 3px #666 solid;
   text-align: center;
-  transition: transform 0.8s, all ease 3s;
+  transition: all ease 0.5s, transform 3s;
   transform-style: preserve-3d;
   border-radius: 10px;
 }
@@ -92,14 +114,53 @@ export default {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-
+/* FRONT CARD */
 .pokemon-card-front {
   width: 100%;
   height: 100%;
   background-color: #bbb;
   border-radius: 6px;
 }
+.pokemon-card-front img {
+  height: 120px;
+}
 
+.pokemon-card-front__title {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 18px;
+  width: 100%;
+}
+
+.pokemon-card-front__title > p:first-of-type {
+  font-size: 11px;
+  background: hotpink;
+  color: #fff;
+  border-radius: 6px 0;
+  padding: 2px 10px 2px 5px;
+  width: 20%;
+}
+
+.pokemon-card-front__title > h4 {
+  text-align: left;
+  margin: 0 0 0 5px;
+  width: 40%;
+}
+
+.pokemon-card-front__title > p:last-of-type {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+  width: 40%;
+  margin: 0 5px 0 0;
+}
+
+.pokemon-card-front__title > p:last-of-type > span {
+  font-size: 10px;
+  margin-right: -5px;
+}
+/* BACK CARD */
 .pokemon-card-back {
   display: flex;
   flex-direction: column;
