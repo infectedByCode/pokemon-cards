@@ -7,20 +7,26 @@
           <h4 class="pokemon-card-front__name">{{ pokemon.name | nameFormat }}</h4>
           <p>
             <span>HP</span>
-            {{hp}}
+            {{pokemon.hp}}
           </p>
         </section>
         <div class="pokemon-card-front__image">
-          <img :src="pokemon.sprites.front_default" :alt="`${pokemon.name} card image`" />
+          <img :src="pokemon.image" :alt="`${pokemon.name} card image`" />
         </div>
         <div class="pokemon-card-front__details">
-          <!-- will v-for moves for max of 2 -->
-          <div class="pokemon-card-front__details-move">
+          <div
+            v-for="move in pokemon.moves"
+            :key="move.id"
+            class="pokemon-card-front__details-move"
+          >
             <div>
-              <p v-for="(cost, i) in energyCost" :key="i" class="energy">&#9733;</p>
+              <p v-for="(cost, i) in energyCost(move.pp)" :key="i" class="energy">&#9733;</p>
             </div>
-            <p>Name and desc of move</p>
-            <span>150</span>
+            <h5>{{move.name | moveFormat}}</h5>
+            <span>{{move.power}}</span>
+            <p
+              class="pokemon-card-front__details-move__desc"
+            >{{move.effect_entries[0].short_effect}}</p>
           </div>
         </div>
         <div class="pokemon-card-front__footer"></div>
@@ -49,6 +55,12 @@ export default {
   filters: {
     nameFormat(name) {
       return name[0].toUpperCase() + name.slice(1).toLowerCase();
+    },
+    moveFormat(move) {
+      return move
+        .split("-")
+        .map(m => m[0].toUpperCase() + m.slice(1).toLowerCase())
+        .join(" ");
     }
   },
   computed: {
@@ -60,14 +72,11 @@ export default {
           ? "pokemon-card__hidden"
           : ""
       }`;
-    },
-    hp() {
-      return this.pokemon.stats.filter(s => s.stat.name === "hp")[0].base_stat;
-    },
-    energyCost() {
-      // temp energy cost for styling
-      // need to grab all data required in initial get
-      return [1, 2, 3, 4, 5];
+    }
+  },
+  methods: {
+    energyCost(move) {
+      return [...Array(move / 10).keys()];
     }
   }
 };
@@ -199,7 +208,7 @@ export default {
 
 .pokemon-card-front__details {
   margin: 0 8px;
-  display: flex;
+  display: grid;
 }
 
 .pokemon-card-front__details-move {
@@ -212,6 +221,17 @@ export default {
   padding: 5px 0;
   margin: 0;
 }
+
+.pokemon-card-front__details-move h5 {
+  font-size: 12px;
+}
+
+.pokemon-card-front__details-move__desc {
+  grid-column: 1/4;
+  font-size: 10px;
+  text-align: left;
+}
+
 /* BACK CARD */
 .pokemon-card-back {
   display: flex;

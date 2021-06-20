@@ -29,7 +29,7 @@ export default {
     };
   },
   beforeCreate() {
-    this.$store.dispatch("fetchPokemon", 20);
+    this.$store.dispatch("fetchPokemon", 3);
   },
   computed: {
     pokemonArr() {
@@ -62,7 +62,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: initial;
-  overflow-x: none;
+  overflow-x: auto;
   padding: 50px 0;
 }
 
