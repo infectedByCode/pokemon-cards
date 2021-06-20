@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <h1>Pokedex</h1>
+    <button @click.prevent="getNextPokemon">next</button>
     <section :class="`pokedex-carousel ${activePokemonId ? 'pokedex-carousel__no-overflow' : ''}`">
       <PokemonCard
         :id="'p' + pokemon.id"
@@ -29,7 +30,7 @@ export default {
     };
   },
   beforeCreate() {
-    this.$store.dispatch("fetchPokemon", 3);
+    this.$store.dispatch("fetchPokemon", 5);
   },
   computed: {
     pokemonArr() {
@@ -44,6 +45,10 @@ export default {
       } else if (activePokemonId === id) {
         this.activePokemonId = null;
       }
+    },
+    getNextPokemon() {
+      this.lastId++;
+      this.$store.dispatch("fetchSinglePokemon", this.lastId);
     }
   }
 };
@@ -51,18 +56,15 @@ export default {
 
 <style scoped>
 #app {
-  box-sizing: border-box;
   height: 100%;
-  width: 80vw;
+  width: auto;
   margin: 0 auto;
-  overflow-wrap: normal;
 }
 
 .pokedex-carousel {
   display: flex;
-  flex-wrap: wrap;
   justify-content: initial;
-  overflow-x: auto;
+  overflow-x: scroll;
   padding: 50px 0;
 }
 

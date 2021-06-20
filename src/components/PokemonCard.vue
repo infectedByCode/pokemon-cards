@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     energyCost(move) {
-      return [...Array(move / 10).keys()];
+      return move ? [...Array(move / 10).keys()] : [null];
     }
   }
 };
@@ -215,10 +215,11 @@ export default {
   display: grid;
   grid-template-columns: 20% 60% 20%;
   align-items: center;
+  height: 60px;
 }
 
 .pokemon-card-front__details-move > * {
-  padding: 5px 0;
+  padding: 2px 0;
   margin: 0;
 }
 
