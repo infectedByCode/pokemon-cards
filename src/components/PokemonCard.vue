@@ -10,9 +10,20 @@
             {{hp}}
           </p>
         </section>
-        <main>
+        <div class="pokemon-card-front__image">
           <img :src="pokemon.sprites.front_default" :alt="`${pokemon.name} card image`" />
-        </main>
+        </div>
+        <div class="pokemon-card-front__details">
+          <!-- will v-for moves for max of 2 -->
+          <div class="pokemon-card-front__details-move">
+            <div>
+              <p v-for="(cost, i) in energyCost" :key="i" class="energy">&#9733;</p>
+            </div>
+            <p>Name and desc of move</p>
+            <span>150</span>
+          </div>
+        </div>
+        <div class="pokemon-card-front__footer"></div>
       </div>
       <div class="pokemon-card-back">
         <img src="../assets/images/pokemon-ball.png" alt />
@@ -52,12 +63,26 @@ export default {
     },
     hp() {
       return this.pokemon.stats.filter(s => s.stat.name === "hp")[0].base_stat;
+    },
+    energyCost() {
+      // temp energy cost for styling
+      // need to grab all data required in initial get
+      return [1, 2, 3, 4, 5];
     }
   }
 };
 </script>
 
 <style scoped>
+.energy {
+  font-size: 10px;
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  margin: 0.5px;
+  background: #ddd;
+}
 /* GENERAL */
 .pokemon-card {
   box-sizing: border-box;
@@ -131,6 +156,9 @@ export default {
   align-items: center;
   height: 18px;
   width: 100%;
+  background: #ddd;
+  padding: 0 0 1px 0;
+  border-radius: 6px 6px 0 0;
 }
 
 .pokemon-card-front__title > p:first-of-type {
@@ -159,6 +187,30 @@ export default {
 .pokemon-card-front__title > p:last-of-type > span {
   font-size: 10px;
   margin-right: -5px;
+}
+
+.pokemon-card-front__image {
+  background: url("../assets/images/background.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 8px;
+  border-radius: 5px;
+}
+
+.pokemon-card-front__details {
+  margin: 0 8px;
+  display: flex;
+}
+
+.pokemon-card-front__details-move {
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  align-items: center;
+}
+
+.pokemon-card-front__details-move > * {
+  padding: 5px 0;
+  margin: 0;
 }
 /* BACK CARD */
 .pokemon-card-back {

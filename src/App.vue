@@ -53,13 +53,16 @@ export default {
 #app {
   box-sizing: border-box;
   height: 100%;
-  overflow: hidden;
+  width: 80vw;
+  margin: 0 auto;
+  overflow-wrap: normal;
 }
 
 .pokedex-carousel {
   display: flex;
+  flex-wrap: wrap;
   justify-content: initial;
-  overflow-x: auto;
+  overflow-x: none;
   padding: 50px 0;
 }
 
