@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     energyCost(move) {
-      return move ? [...Array(move / 10).keys()] : [null];
+      return move ? [...Array(parseInt(move / 10)).keys()] : [null];
     }
   }
 };
