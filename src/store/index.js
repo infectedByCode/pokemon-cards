@@ -35,7 +35,11 @@ export default new Vuex.Store({
                 rawPokemon.stats.filter((s) => s.stat.name === 'hp')[0]
                   ?.base_stat || '10',
               image: rawPokemon.sprites.front_default,
-              moves: []
+              moves: [],
+              stats: rawPokemon.stats,
+              types: rawPokemon.types,
+              weight: rawPokemon.weight,
+              height: rawPokemon.height
             };
             for (let i = 0; i < 2; i++) {
               const move = await dispatch(
