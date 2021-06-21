@@ -1,5 +1,5 @@
 <template>
-  <div :id="pokemon.id" :class="cardClasses" @click="$emit('click', pokemon.id)" tabindex="0">
+  <div :id="pokemon.id" :class="cardClasses" @click="handleClick" tabindex="0">
     <div class="pokemon-card-inner">
       <div class="pokemon-card-front">
         <section class="pokemon-card-front__title">
@@ -50,6 +50,10 @@ export default {
       type: Number,
       required: false,
       default: -1
+    },
+    position: {
+      type: Object,
+      required: false
     }
   },
   filters: {
@@ -69,14 +73,35 @@ export default {
         this.activePokemonId === this.pokemon.id
           ? "pokemon-card__effect"
           : this.activePokemonId
-          ? "pokemon-card__hidden"
+          ? "pokemon-card__inactive"
           : ""
       }`;
     }
   },
   methods: {
+    handleClick() {
+      if (!this.activePokemonId || this.activePokemonId === this.pokemon.id) {
+        this.$emit("click", this.pokemon.id);
+        this.toggleActiveCard(this.pokemon.id);
+      }
+    },
     energyCost(move) {
       return move ? [...Array(parseInt(move / 10)).keys()] : [null];
+    },
+    toggleActiveCard(id) {
+      const activeCard = document.querySelector("#p" + id);
+
+      setTimeout(() => {
+        activeCard.style.position = "relative";
+        if (this.position) {
+          const leftDiff = activeCard.offsetLeft - this.position.left;
+          activeCard.style.top = -this.position.top + "px";
+          activeCard.style.left = -leftDiff + "px";
+        } else {
+          activeCard.style.top = "0px";
+          activeCard.style.left = "0px";
+        }
+      }, 1000);
     }
   }
 };
@@ -104,22 +129,24 @@ export default {
   bottom: 0;
   left: 0;
   opacity: 1;
-  transition: top ease 4s, right ease 4s, bottom ease 4s, left ease 4s,
+  transition: top ease 2s, right ease 2s, bottom ease 2s, left ease 2s,
     opacity ease-in-out 0.5s, margin ease-in-out 1s;
 }
 
 .pokemon-card:hover {
   margin: 0 50px 0 0;
+  cursor: pointer;
 }
 
 .pokemon-card-inner:hover {
   box-shadow: 10px 10px 5px #444;
 }
 
-.pokemon-card__hidden {
+.pokemon-card__inactive {
   opacity: 0;
   box-shadow: none;
   outline: none;
+  visibility: hidden;
 }
 
 .pokemon-card-inner {
@@ -127,7 +154,7 @@ export default {
   height: 100%;
   border: 3px #666 solid;
   text-align: center;
-  transition: all ease 0.5s, transform 3s;
+  transition: all ease 1s, transform 2s;
   transform-style: preserve-3d;
   border-radius: 10px;
 }
